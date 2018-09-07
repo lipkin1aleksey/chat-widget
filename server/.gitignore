@@ -1,1 +1,3 @@
-# prevent folder delete
+node_modules/
+
+package-lock.json
