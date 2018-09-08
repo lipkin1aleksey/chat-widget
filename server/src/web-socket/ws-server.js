@@ -1,27 +1,24 @@
 const WSConfig = require('../config/ws-server')
 
 const WebSocketServer = require('ws').Server
-const EventEmitter = require('events').EventEmitter
 
+const WSSEmitter = require('./emitter/wss-emitter')
 const Visiter = require('./visiter')
 
 class WSServet {
   constructor() {
     this._wss = new WebSocketServer(WSConfig)
     this.setWssEvents()
-
-    this._wssEmitter = new EventEmitter()
-    this._setEvents()
-
     this.visiters = new Map()
+
+    this.wssEmitter = new WSSEmitter()
   }
 
   setWssEvents() {
     this._wss.on('connection', ws => {
       console.log('user+') // can delete
       
-      var visiter = this._addVisiter(ws)
-      visiter.send('reqToken', {token: visiter.token})
+      this._addVisiter(ws)
     })
   }
 
@@ -29,7 +26,7 @@ class WSServet {
     var token = this._generateToken()
 
     var newVisiter = this.visiters
-      .set(token, new Visiter(token, ws, this._wssEmitter))
+      .set(token, new Visiter(token, ws, this.wssEmitter))
       .get(token)
 
     return newVisiter
@@ -43,10 +40,6 @@ class WSServet {
     } while ( this.visiters.has(token) )
 
     return token
-  }
-
-  _setEvents() {
-    // this._wssEmitter.on('', this._playVsBotListener.bind(this))
   }
 }
 

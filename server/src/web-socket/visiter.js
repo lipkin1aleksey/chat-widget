@@ -1,5 +1,5 @@
-const EventEmitter = require('events').EventEmitter
-const visiterEvents = require('./visiterEvents')
+const VisiterEmitter = require('./emitter/visiter-emitter')
+const messageEvents = require('./events/messageEvents')
 
 class Visiter {
   constructor(token, ws, wssEmitter) {
@@ -7,14 +7,15 @@ class Visiter {
     this._ws = ws
     this._createWSEventListener()
 
-    this._wssEmitter = wssEmitter
-    this._visiterEmitter = new EventEmitter()
+    this.wssEmitter = wssEmitter
+    this.visiterEmitter = new VisiterEmitter()
   }
 
   _createWSEventListener() {
     this._ws.on('message', event => {
       const data = JSON.parse(event)
-      visiterEvents[data.event](this)
+      
+      messageEvents[data.event](this)
     })
 
     this._ws.on('close', () => console.log('-user'))
