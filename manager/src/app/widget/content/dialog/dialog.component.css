@@ -1,0 +1,39 @@
+.dialog {
+    list-style-type: none;
+    padding: 0;
+}
+.message {
+    position: relative;
+    margin-bottom: 16px;
+}
+.message .client,
+.message .manager {
+    display: inline-block;
+    padding: 16px;
+    border-radius: 5px;
+}
+.client {
+    background: #EAF1FF;
+}
+.manager {
+    background: #B4E7FF;
+}
+.triangle {
+    position: absolute;
+    top: 50%;
+    left: -5px;
+    width: 0;
+    height: 0;
+    padding: 0;
+    border: 0 solid transparent;
+    border-top-width: 5px;
+    border-bottom-width: 5px;
+    border-right: 5px solid black;
+    transform: translateY(-50%);
+}
+.client + .triangle {
+    border-right-color: #EAF1FF;
+}
+.manager + .triangle {
+    border-right-color: #B4E7FF;
+}
