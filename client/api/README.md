@@ -1,4 +1,4 @@
-# Turn on a Websocket Server
+## Turn on the Websocket Server
 
 ```
 import WSServer from '...'
@@ -6,7 +6,7 @@ import WSServer from '...'
 const wsServer = new WSServer("localhost", 5000)
 ```
 
-# Send massage to server
+## Send message to a server
 
 ```
 var data = {
@@ -17,7 +17,7 @@ var eventName = "sayHello"
 wsServer.send(eventName, data)
 ```
 
-# Add event listener server's response
+## Add event listener on a server's response
 
 ```
 function alertMessage(data) {
@@ -28,4 +28,4 @@ var eventName = "listenHello"
 wsServer.on(eventName, alertMessage)
 ```
 
-## All regular events should hold in the './api/message.js'
+## All regular events should hold in the './api/events/messageEvents.js'

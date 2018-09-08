@@ -1,5 +1,5 @@
 export default {
-  'reqToken': function(data) {
+  'getToken': function(data) {
     localStorage.setItem( 'tokem', data.token )
   }
 }

@@ -1,4 +1,5 @@
-import messageEvents from "./messageEvents"
+import messageEvents from "./events/messageEvents"
+import wsEvents from './events/wsEvents'
 
 class WSServer {
   constructor(address, port) {
@@ -8,15 +9,10 @@ class WSServer {
   }
 
   _setWsEvents() {
-    for (const eventName in messageEvents) {
-      this.on(eventName, messageEvents[eventName])
-    }
-
-    this.ws.onmessage = e => {
-      const data = JSON.parse(e.data);
-      
-      this.messageEvents[data.event].call(this, data.data)
-    }
+    this.ws.onmessage = wsEvents.onMessage.bind(this)
+    this.ws.onopen = wsEvents.onOpen.bind(this)
+    this.ws.onclose = wsEvents.onClone.bind(this)
+    this.ws.onerror = wsEvents.onError.bind(this)
   }
 
   on(event, func) {
