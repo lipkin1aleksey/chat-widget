@@ -1,6 +1,8 @@
 module.exports = {
   onMessage: function(event) {
-
+    const data = JSON.parse(event)
+      
+    this.messageEvents[data.event](this)
   },
   onOpen: function(event) {
     
@@ -9,6 +11,6 @@ module.exports = {
     
   },
   onClone: function(event) {
-    
+    console.log('-user')
   }
 }

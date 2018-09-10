@@ -1,6 +1,6 @@
 const EventEmitter = require('events').EventEmitter
 
-class VisiterEmitter extends EventEmitter{
+class ClientEmitter extends EventEmitter{
   constructor() {
     super()
 
@@ -12,4 +12,4 @@ class VisiterEmitter extends EventEmitter{
   }
 }
 
-module.exports = VisiterEmitter
+module.exports = ClientEmitter
