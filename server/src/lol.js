@@ -24,12 +24,12 @@ dialog = [
     who: 'you',
     name: 'Igor',
     message: 'sss',
-    date: // тип new Date().toJSON()
+    date: ''// тип new Date().toJSON()
   },
   {
     who: 'menager',
     name: 'Stas',
     message: 'sss',
-    date: // тип new Date().toJSON()
+    date: ''// тип new Date().toJSON()
   }
 ]

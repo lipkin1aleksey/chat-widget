@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  # Серверное приложение
+  server:
+    build: ./server
+    # Дать доступ на порту 5000
+    ports:
+      - "5000:5000"
+
+    # Перезапускать сервис после падения
+    restart: on-failure
+
+    # Подключиться к сети db-net
+    networks:
+      - db-net
+
+  # Клиентское приложение
+  manager:
+    build: ./manager
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./manager:/app
+    restart: on-failure
+    depends_on:
+      - server
+
+# Создаем сеть
+networks: 
+  db-net:
