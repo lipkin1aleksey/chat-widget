@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  
+<script>
+
+var messageEvents = {
+  'reqToken': function(data) {
+    console.log(data.token);
+    
+    localStorage.setItem( 'tokem', data.token )
+  }
+}
+
+class WSServer {
+  constructor(address, port) {
+    this.ws = new WebSocket("ws://" + address  + ':' + port)
+    this.messageEvents = messageEvents
+    this._setWsEvents()
+  }
+
+  _setWsEvents() {
+    for (const eventName in messageEvents) {
+      this.on(eventName, messageEvents[eventName])
+    }
+
+    this.ws.onmessage = e => {
+      const data = JSON.parse(e.data);
+      
+      this.messageEvents[data.event].call(this, data.data)
+    }
+  }
+
+  on(event, func) {
+    this.messageEvents[event] = func
+  }
+
+  send(event, data) {
+    this.ws.send( JSON.stringify({
+      event,
+      data
+    }) )    
+  }
+}
+
+const wsServer = new WSServer("localhost", 5000)
+
+</script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Page Title</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  hello 111
+  </body>
+<script>
+
+const messageEvents = {
+  'getToken': function(data) {
+    console.log(data.token)
+    
+    localStorage.setItem( 'tokem', data.token )
+  }
+}
+
+const wsEvents = {
+  onMessage: function(event) {
+    const data = JSON.parse(event.data);
+      
+    this.messageEvents[data.event].call(this, data.data)
+  },
+  onOpen: function() {
+    alert('Connection!!')
+
+    this.send('start', { token: localStorage.getItem( 'tokem' ) })
+  },
+  onError: function() {
+    alert('Not Catched error')
+
+    throw new Error('Not Catched error')
+  },
+  onClone: function() {
+    alert('Close the contection with server')
+    
+    throw new Error('Close the contection with server')
+  }
+}
+
+
+class WSServer {
+  constructor(address, port) {
+    this.ws = new WebSocket("ws://" + address  + ':' + port)
+    this.messageEvents = messageEvents
+    this._setWsEvents()
+  }
+
+  _setWsEvents() {
+    this.ws.onmessage = wsEvents.onMessage.bind(this)
+    this.ws.onopen = wsEvents.onOpen.bind(this)
+    this.ws.onclose = wsEvents.onClone.bind(this)
+    this.ws.onerror = wsEvents.onError.bind(this)
+  }
+
+  on(event, func) {
+    this.messageEvents[event] = func
+  }
+
+  send(event, data) {
+    this.ws.send( JSON.stringify({
+      event,
+      data
+    }) )    
+  }
+}
+
+const wsServer = new WSServer("localhost", 5000)
+
+</script>
+</body>
+</html>
