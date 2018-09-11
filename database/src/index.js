@@ -3,10 +3,15 @@ let dbClass = require("./classes/dbClass.js");
 
 let q = new dbClass.dbClass();
 
-q.getUser(1).then(e => {
+q.getUser(3).then(e => {
   console.log(e);
 })
 
-q.getDialog(1).then(e => {
+q.addMessage(1, 'test', {type:'manager', name: "Inav Ivanov"}).then(e => {
   console.log(e);
 })
+
+// q.getDialog(1).then(e => {
+//   console.log(e);
+// })
+

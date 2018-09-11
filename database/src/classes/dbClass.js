@@ -13,6 +13,16 @@ class dbClass {
     this.firestore.settings(settings);
   }
 
+  dbListener(){
+    var doc = this.firestore.collection('main').doc('users');
+
+    return doc.onSnapshot(docSnapshot => {
+      console.log(docSnapshot.data());
+    }, err => {
+      console.log(`Encountered error: ${err}`);
+    });
+  }
+
   getUser (pId) {
     let usersRef = this.firestore.collection('users');
     return usersRef.where("id", "==", pId).get()
@@ -58,16 +68,16 @@ class dbClass {
   }
 
   addMessage(pUserId, message, pType){
-    //this.FieldValue.serverTimestamp()
     let convRef = this.firestore.collection('conversations').where('userId','==',pUserId).orderBy('id','desc');
     return convRef.get()
       .then(snapshot => {
         let convData;
         snapshot.forEach(doc => {
           convData = doc.data();
-          convData.messages.push({text: message, type: pType, time: Date.now()});
+          convData.messages.push({text: message, sender: pType, time: Date.now()});
           doc.ref.set(convData);
         });
+        return message;
       })
       .catch(err => {
         this.addConversation(pUserId);
