@@ -1,4 +1,4 @@
 .idea
 backup
 node_modules
-# .vscode
+.vscode/

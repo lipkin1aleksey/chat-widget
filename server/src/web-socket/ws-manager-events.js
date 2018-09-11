@@ -3,6 +3,6 @@ module.exports = {
     console.log('user+') // can delete
 
     // this.addClient(ws)
-    this.wssEmitter.emit('addClient', ws)
+    this.wssEmitter.emit('addManager', ws)
   }
 }

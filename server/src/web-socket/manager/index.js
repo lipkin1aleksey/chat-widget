@@ -23,6 +23,7 @@ class Manager {
   }
 
   send(event, data) {
+    console.log(`send -> ( event: "${event}" ) `)  //
     this._ws.send( JSON.stringify({
       event,
       data
