@@ -10,7 +10,8 @@ class WSSEmitter extends EventEmitter{
   }
 
   _setEvents() {
-    this.on('addClient', this.wss.addClient)
+    this.on('addClient', this.wss.addClient.bind(this.wss))
+    this.on('addManager', this.wss.addManager.bind(this.wss))
   }
 }
 

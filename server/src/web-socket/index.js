@@ -1,15 +1,19 @@
-const WSConfig = require('../config/ws-server')
+const WSConfigClient = require('../config/ws-config-client')
+const WSConfigManager = require('../config/ws-config-manager')
 
 const WebSocketServer = require('ws').Server
 
 const WSSEmitter = require('./wss-emitter')
-const WSSEvents = require('./wss-events')
+const WSClientEvents = require('./ws-client-events')
+const WSManagerEvents = require('./ws-manager-events')
 
 const Client = require('./client')
+const Manager = require('./manager')
 
 class WSServet {
   constructor() {
-    this._wss = new WebSocketServer(WSConfig)
+    this._wssClient = new WebSocketServer(WSConfigClient)
+    this._wssManager = new WebSocketServer(WSConfigManager)
     this.setWssEvents()
 
     // this.clients = new Map()
@@ -22,13 +26,17 @@ class WSServet {
   }
 
   setWssEvents() {
-    this._wss.on('connection', WSSEvents.onConnection.bind(this))
+    this._wssClient.on('connection', WSClientEvents.onConnection.bind(this))
+    this._wssManager.on('connection', WSManagerEvents.onConnection.bind(this))
   }
 
   addClient(ws) {
     this.clients.push( new Client(null, ws, this.wssEmitter) )
   }
 
+  addManager(ws) {
+    this.managers.push( new Manager(null, ws, this.wssEmitter) )
+  }
   /*_addClient(ws) {
     var token = this._generateToken()
 

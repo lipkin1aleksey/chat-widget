@@ -8,21 +8,30 @@
 </head>
 <body>
 
+<button id="get-dialog">Get Dialog</button>
 <ul id="dialog"></ul>
 
 <input type="text" id="message">
 <button id="submit">Submit</button>
 
 <script>
+// токен из базы данных
+var token = 1
 
-const messageEvents = {
-  'setToken': function(data) {
-    localStorage.setItem( 'tokem', data.token )
-  },
+const messageEvents = { // события, которые будут отлавливаться 
   'getDialog': function(data) {
     addDialog(data)
   }
 }
+function addDialog(data) {
+  for(var message of data.dialog) {
+    var el = document.createElement('LI')
+    el.textContent = message.text
+    dialog.append(el)
+  }
+}
+
+////////
 
 const wsEvents = {
   onMessage: function(event) {
@@ -31,13 +40,7 @@ const wsEvents = {
     this.messageEvents[data.event].call(this, data.data)
   },
   onOpen: function() {
-    // alert('Connection!!')
-
-    var token = localStorage.getItem( 'token' )
-    if(token)
-      this.send('getDialog', { token })
-    //else
-      // должна ждать отправки имени у виджета
+    /* ... */
   },
   onError: function() {
     alert('Not Catched error')
@@ -78,23 +81,24 @@ class WSServer {
   }
 }
 
-const wsServer = new WSServer("localhost", 5000)
+////////
 
-function addDialog(data) {
-  for(var message of data.dialog) {
-    var el = document.createElement('LI')
-    el.textContent = message.text
-    dialog.append(el)
-  }
+const wsServer = new WSServer("localhost", 5001)
+
+var getDialog = document.querySelector('#get-dialog')
+getDialog.onclick = () => {
+  wsServer.send('getDialog', { token }) // просьба получить диалог
 }
 
+var submit = document.querySelector('#submit')
+var dialog = document.querySelector('#dialog')
 submit.onclick = () => {
   var el = document.createElement('LI')
   el.textContent = message.value
   dialog.append(el)
 
-  wsServer.send('addMessage', { 
-    token: localStorage.getItem( 'token' ),
+  wsServer.send('addMessage', { // отправка сообщения
+    token,
     text: message.value
   })
 }
