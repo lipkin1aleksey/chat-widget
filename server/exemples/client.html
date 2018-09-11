@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Page Title</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<ul id="dialog"></ul>
+
+<input type="text" id="message">
+<button id="submit">Submit</button>
+
+<script>
+
+const messageEvents = {
+  'setToken': function(data) {
+    localStorage.setItem( 'tokem', data.token )
+  },
+  'getDialog': function(data) {
+    addDialog(data)
+  },
+  'getLastMessage': function(data) {
+    addLastMassage(data)
+  }
+}
+
+const wsEvents = {
+  onMessage: function(event) {
+    const data = JSON.parse(event.data);
+      
+    this.messageEvents[data.event].call(this, data.data)
+  },
+  onOpen: function() {
+    // alert('Connection!!')
+
+    var token = localStorage.getItem( 'token' )
+    if(token)
+      this.send('getDialog', { token })
+    //else
+      // должна ждать отправки имени у виджета
+  },
+  onError: function() {
+    alert('Not Catched error')
+
+    throw new Error('Not Catched error')
+  },
+  onClone: function() {
+    alert('Close the contection with server')
+    
+    throw new Error('Close the contection with server')
+  }
+}
+
+
+class WSServer {
+  constructor(address, port) {
+    this.ws = new WebSocket("ws://" + address  + ':' + port)
+    this.messageEvents = messageEvents
+    this._setWsEvents()
+  }
+
+  _setWsEvents() {
+    this.ws.onmessage = wsEvents.onMessage.bind(this)
+    this.ws.onopen = wsEvents.onOpen.bind(this)
+    this.ws.onclose = wsEvents.onClone.bind(this)
+    this.ws.onerror = wsEvents.onError.bind(this)
+  }
+
+  on(event, func) {
+    this.messageEvents[event] = func
+  }
+
+  send(event, data) {
+    this.ws.send( JSON.stringify({
+      event,
+      data
+    }) )    
+  }
+}
+
+const wsServer = new WSServer("localhost", 5000)
+
+function addDialog(data) {
+  for(var message of data.dialog) {
+    var el = document.createElement('LI')
+    el.textContent = message.text
+    dialog.append(el)
+  }
+}
+
+function addLastMassage(data) {
+  var el = document.createElement('LI')
+  el.textContent = data.message.text
+  dialog.append(el)
+}
+
+submit.onclick = () => {
+  var el = document.createElement('LI')
+  el.textContent = message.value
+  dialog.append(el)
+
+  wsServer.send('addMessage', { 
+    token: localStorage.getItem( 'token' ),
+    text: message.value
+  })
+}
+
+</script>
+</body>
+</html>

@@ -2,7 +2,7 @@ module.exports = {
   onMessage: function(event) {
     const data = JSON.parse(event)
       
-    this.messageEvents[data.event](this)
+    this.messageEvents[data.event].bind(this)(data.data)
   },
   onOpen: function(event) {
     

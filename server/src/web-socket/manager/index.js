@@ -7,7 +7,7 @@ class Manager {
     this._ws = ws
     this._createWSEventListener()
 
-    this.messageEvents = {}
+    this.messageEvents = require('./message-events')
 
     this.wssEmitter = wssEmitter
     this.managerEmitter = new ManagerEmitter()

@@ -1,7 +1,9 @@
 node_modules/
 
-src/classes/
+# src/classes/
 
-assets/
+# assets/
 
 package-lock.json
+
+# database/
