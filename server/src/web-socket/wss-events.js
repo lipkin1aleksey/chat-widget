@@ -2,6 +2,7 @@ module.exports = {
   onConnection: function(ws) {
     console.log('user+') // can delete
 
-    this._addClient(ws)
+    this.addClient(ws)
+    // this.wssEmitter.emit('addClient', ws)
   }
 }
