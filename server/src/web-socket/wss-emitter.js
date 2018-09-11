@@ -1,14 +1,16 @@
 const EventEmitter = require('events').EventEmitter
 
 class WSSEmitter extends EventEmitter{
-  constructor() {
+  constructor(wss) {
     super()
+
+    this.wss = wss
 
     this._setEvents()
   }
 
   _setEvents() {
-    // this.on('', this._playVsBotListener.bind(this))
+    this.on('addClient', this.wss.addClient)
   }
 }
 
