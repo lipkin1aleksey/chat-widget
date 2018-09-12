@@ -1,16 +1,23 @@
-const ClientEmitter = require('./client-emitter')
+// const ClientEmitter = require('./client-emitter')
 const clientEvents = require('./client-events')
 
 class Client {
-  constructor(token, ws, wssEmitter) {
-    this.token = token
+  constructor(ws, wssEmitter) {
+    this._token
     this._ws = ws
     this._createWSEventListener()
 
     this.messageEvents = require('./message-events')
 
     this.wssEmitter = wssEmitter
-    this.clientEmitter = new ClientEmitter()
+    // this.clientEmitter = new ClientEmitter()
+  }
+
+  getToken() {
+    return this._token
+  }
+  setToken(token) {
+    this._token = token
   }
 
   _createWSEventListener() {
@@ -23,6 +30,7 @@ class Client {
   }
 
   send(event, data) {
+    console.log(`send -> ( event: "${event}" ) `)  //
     this._ws.send( JSON.stringify({
       event,
       data

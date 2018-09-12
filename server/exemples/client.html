@@ -5,6 +5,14 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Page Title</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    #dialog {
+      height: 300px;
+      width: 400px;
+
+      overflow: scroll;
+    }
+  </style>
 </head>
 <body>
 
@@ -13,11 +21,16 @@
 <input type="text" id="message">
 <button id="submit">Submit</button>
 
+<hr>
+
+<input type="text" id="client-name">
+<button id="add-client">Add me</button>
+
 <script>
 
 const messageEvents = {
   'setToken': function(data) {
-    localStorage.setItem( 'tokem', data.token )
+    localStorage.setItem( 'token', data.token )
   },
   'getDialog': function(data) {
     addDialog(data)
@@ -26,6 +39,8 @@ const messageEvents = {
     addLastMassage(data)
   }
 }
+
+////
 
 const wsEvents = {
   onMessage: function(event) {
@@ -38,7 +53,7 @@ const wsEvents = {
 
     var token = localStorage.getItem( 'token' )
     if(token)
-      this.send('getDialog', { token })
+      this.send('continueDialog', { token })
     //else
       // должна ждать отправки имени у виджета
   },
@@ -81,7 +96,11 @@ class WSServer {
   }
 }
 
+////
+
 const wsServer = new WSServer("localhost", 5000)
+
+// add dialog
 
 function addDialog(data) {
   for(var message of data.dialog) {
@@ -91,6 +110,8 @@ function addDialog(data) {
   }
 }
 
+// send message
+
 function addLastMassage(data) {
   var el = document.createElement('LI')
   el.textContent = data.message.text
@@ -98,15 +119,27 @@ function addLastMassage(data) {
 }
 
 submit.onclick = () => {
-  var el = document.createElement('LI')
-  el.textContent = message.value
-  dialog.append(el)
+  addLastMassage({message: {
+    text: message.value
+  }})
 
   wsServer.send('addMessage', { 
     token: localStorage.getItem( 'token' ),
     text: message.value
   })
 }
+
+
+// add Name 
+var clientName = document.querySelector('#client-name')
+var addClient = document.querySelector('#add-client')
+addClient.onclick = () => {
+  wsServer.send('addClient', {
+    name: clientName.value,
+    token: localStorage.getItem( 'token' )
+  })
+}
+
 
 </script>
 </body>

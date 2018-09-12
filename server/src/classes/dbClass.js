@@ -77,7 +77,7 @@ class dbClass {
           convData.messages.push({text: message, sender: pType, time: Date.now()});
           doc.ref.set(convData);
         });
-        return message;
+        return convData.messages[convData.messages.length-1]
       })
       .catch(err => {
         this.addConversation(pUserId);

@@ -1,8 +1,9 @@
 module.exports = {
   onMessage: function(event) {
     const data = JSON.parse(event)
-      
-    this.messageEvents[data.event].bind(this)(data.data)
+    console.log(`on -> ( event: "${data.event}" ) `)  //    
+
+    this.messageEvents[data.event].call(this, data.data)
   },
   onOpen: function(event) {
     
@@ -10,7 +11,9 @@ module.exports = {
   onError: function(event) {
     
   },
-  onClone: function(event) {
+  onClone: function() {
     console.log('-user')
+
+    this.wssEmitter.emit( 'removeClient', this.getToken() )
   }
 }
