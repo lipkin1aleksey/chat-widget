@@ -13,5 +13,7 @@ module.exports = {
   },
   onClone: function(event) {
     console.log('-user')
+
+    this.wssEmitter.emit('removeManager', this )
   }
 }

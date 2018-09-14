@@ -1,16 +1,13 @@
-const ManagerEmitter = require('./manager-emitter')
 const managerEvents = require('./manager-events')
 
 class Manager {
-  constructor(token, ws, wssEmitter) {
-    this.token = token
+  constructor(ws, wssEmitter) {
     this._ws = ws
     this._createWSEventListener()
 
     this.messageEvents = require('./message-events')
 
     this.wssEmitter = wssEmitter
-    this.managerEmitter = new ManagerEmitter()
   }
 
   _createWSEventListener() {

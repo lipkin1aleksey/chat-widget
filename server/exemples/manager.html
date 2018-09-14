@@ -5,29 +5,30 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Page Title</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    #dialog {
+      height: 300px;
+      width: 400px;
+
+      overflow: scroll;
+    }
+  </style>
 </head>
 <body>
+  <ul id="dialog"></ul>
 
-<button id="get-dialog">Get Dialog</button>
-<ul id="dialog"></ul>
-
-<input type="text" id="message">
-<button id="submit">Submit</button>
-
+  <input type="text" id="message">
+  <button id="submit">Submit</button>
 <script>
 // токен из базы данных
-var token = 1
+var token = '54wak9'
 
 const messageEvents = { // события, которые будут отлавливаться 
   'getDialog': function(data) {
     addDialog(data)
-  }
-}
-function addDialog(data) {
-  for(var message of data.dialog) {
-    var el = document.createElement('LI')
-    el.textContent = message.text
-    dialog.append(el)
+  },
+  'getLastMessage': function(data) {
+    addLastMassage(data)
   }
 }
 
@@ -40,7 +41,7 @@ const wsEvents = {
     this.messageEvents[data.event].call(this, data.data)
   },
   onOpen: function() {
-    /* ... */
+    this.send('getDialog', { token })
   },
   onError: function() {
     alert('Not Catched error')
@@ -86,21 +87,30 @@ class WSServer {
 const wsServer = new WSServer("localhost", 5001)
 
 var getDialog = document.querySelector('#get-dialog')
-getDialog.onclick = () => {
-  wsServer.send('getDialog', { token }) // просьба получить диалог
+// getDialog.onclick = () => {
+//   wsServer.send('getDialog', { token }) // просьба получить диалог
+// }
+function addDialog(data) {
+  for(var message of data.dialog) {
+    var el = document.createElement('LI')
+    el.textContent = message.text
+    dialog.append(el)
+  }
 }
 
-var submit = document.querySelector('#submit')
-var dialog = document.querySelector('#dialog')
-submit.onclick = () => {
+function addLastMassage(data) {
   var el = document.createElement('LI')
-  el.textContent = message.value
+  el.textContent = data.message.text
   dialog.append(el)
+}
 
-  wsServer.send('addMessage', { // отправка сообщения
+submit.onclick = () => {
+  wsServer.send('addMessage', { 
     token,
     text: message.value
   })
+
+  message.value = ""
 }
 
 </script>

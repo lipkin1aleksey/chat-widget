@@ -14,6 +14,6 @@ module.exports = {
   onClone: function() {
     console.log('-user')
 
-    this.wssEmitter.emit( 'removeClient', this.getToken() )
+    this.wssEmitter.emit('removeClient', this.getToken(), this )
   }
 }

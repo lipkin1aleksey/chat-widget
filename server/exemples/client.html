@@ -119,16 +119,13 @@ function addLastMassage(data) {
 }
 
 submit.onclick = () => {
-  addLastMassage({message: {
-    text: message.value
-  }})
-
   wsServer.send('addMessage', { 
     token: localStorage.getItem( 'token' ),
     text: message.value
   })
-}
 
+  message.value = ""
+}
 
 // add Name 
 var clientName = document.querySelector('#client-name')

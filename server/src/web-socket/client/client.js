@@ -1,4 +1,3 @@
-// const ClientEmitter = require('./client-emitter')
 const clientEvents = require('./client-events')
 
 class Client {
@@ -10,7 +9,6 @@ class Client {
     this.messageEvents = require('./message-events')
 
     this.wssEmitter = wssEmitter
-    // this.clientEmitter = new ClientEmitter()
   }
 
   getToken() {

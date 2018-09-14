@@ -7,7 +7,7 @@ const WSSEmitter = require('./wss-emitter')
 const WSClientEvents = require('./ws-client-events')
 const WSManagerEvents = require('./ws-manager-events')
 
-const Manager = require('./manager')
+const Manager = require('./manager/manager')
 
 class WSServet {
   constructor() {
@@ -15,11 +15,7 @@ class WSServet {
     this._wssManager = new WebSocketServer(WSConfigManager)
     this.setWssEvents()
 
-    this.clientAmount = new Map()
     this.clients = new Map()
-    // this.clients = []
-    
-    // this.managers = new Map()
     this.managers = []
 
     this.wssEmitter = new WSSEmitter(this)
@@ -30,33 +26,33 @@ class WSServet {
     this._wssManager.on('connection', WSManagerEvents.onConnection.bind(this))
   }
 
-  // addClient(ws) {
-  //   this.clients.push( new Client(null, ws, this.wssEmitter) )
-  // }
-
   addManager(ws) {
-    this.managers.push( new Manager(null, ws, this.wssEmitter) )
+    this.managers.push( new Manager(ws, this.wssEmitter) )
+  }
+  getManagers() {
+    return this.managers
+  }
+  removeManager(manager) {
+    this.managers.splice( this.managers.indexOf(manager), 1 )
   }
 
-  setClient(token, client) {
-    this.clients.set(token, client)
+  addClient(token, client) {
+    if(!this.clients.has(token))
+      this.clients.set(token, [client])
+    else
+      this.clients.get(token).push(client)
   }
-  getClient(token) {
-    this.clients.get(token)
+  getClients(token) {
+    return this.clients.get(token)
   }
-  removeClient(token) {
-    this.clients.delete(token)
+  removeClient(token, client) {
+    var clients = this.clients.get(token)
+
+    if(clients.length > 1) {
+      clients.splice( clients.indexOf(client), 1 )
+    } else 
+      this.clients.delete(token)
   }
-
-  /*_generateToken() {
-    var token
-
-    do {
-      token = Math.random().toString(36).substring(2, 8)
-    } while ( this.clients.has(token) )
-
-    return token
-  }*/
 }
 
 module.exports = WSServet

@@ -1,3 +1,3 @@
 require('./database')
-const WSServer = require('./web-socket')
+const WSServer = require('./web-socket/ws-server')
 new WSServer()

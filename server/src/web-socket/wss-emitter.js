@@ -9,18 +9,17 @@ class WSSEmitter extends EventEmitter{
   }
 
   _setEvents() {
-    this.on('addManager', this.wss.addManager.bind(this.wss))
-    this.on('managerAddMessage', (data) => {
-      // this.wss.getClient
-      // this.send('getLastMessage', data)
-    })
-
-    this.on('addClient', this.wss.setClient.bind(this.wss))
-    this.on('clientAddMassage', (data) => {
-      
-      // this.send('getLastMessage', data)
-    })
+    this.on('addClient', this.wss.addClient.bind(this.wss))
     this.on('removeClient', this.wss.removeClient.bind(this.wss))
+
+    this.on('addManager', this.wss.addManager.bind(this.wss))
+    this.on('removeManager', this.wss.removeManager.bind(this.wss))
+
+    this.on('addMassage', (data) => {
+      this.wss.getClients(data.token).forEach(client => client.send('getLastMessage', data))
+      this.wss.getManagers(data.token).forEach(manager => manager.send('getLastMessage', data)) 
+
+    })
   }
 }
 

@@ -10,12 +10,10 @@ module.exports = {
   'addMessage': function(data) {
     db.addMessage( data.token, data.text, 1 )
       .then( message => {
-        this.wssEmitter.emit('managerAddMessage', {
+        this.wssEmitter.emit('addMassage', {
           message,
-          client: data.token
+          token: data.token
         })
       })
-  },
-  // 'sendLastMessage': function(data) {
-  // }
+  }
 }

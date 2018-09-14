@@ -17,13 +17,13 @@ module.exports = {
     db.addUser( data.name, token )
     
     this.setToken(data.token)
-    this.wssEmitter.emit('setClient', this)
+    this.wssEmitter.emit('addClient', token, this)
 
     this.send('setToken', { token })
   },
   'continueDialog': function(data) {
     this.setToken(data.token)
-    this.wssEmitter.emit('setClient', this)
+    this.wssEmitter.emit('addClient', data.token, this)
 
     db.getDialog(data.token)
       .then( dialog => {
@@ -33,9 +33,9 @@ module.exports = {
   'addMessage': function(data) {
     db.addMessage( data.token, data.text, 1 )
       .then( message => {
-        this.wssEmitter.emit('clientAddMassage', {
+        this.wssEmitter.emit('addMassage', {
           message,
-          client: data.token
+          token: data.token
         })
       })
   }
