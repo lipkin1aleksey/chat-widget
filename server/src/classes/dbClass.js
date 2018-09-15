@@ -39,14 +39,14 @@ class dbClass {
   }
 
   getUsers () {
-    let usersRef = this.firestore.collection('main').doc('users');
-    usersRef.get()
-      .then(users => {
-        if (!users.exists) {
-          console.log('No such document!');
-        } else {
-          console.log('Document data:', users.data());
-        }
+    let usersRef = this.firestore.collection('users');
+    return usersRef.get()
+      .then(snapshot => {
+        let lUsers = [];
+        snapshot.forEach(user => {
+          lUsers.push(user.data());
+        });
+        return lUsers;
       })
       .catch(err => {
         console.log('Error getting document', err);

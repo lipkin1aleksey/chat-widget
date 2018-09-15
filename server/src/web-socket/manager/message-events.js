@@ -14,6 +14,12 @@ module.exports = {
           message,
           token: data.token
         })
+      })      
+  },
+  'getAllClients': function() {
+    db.getUsers()
+      .then(clients => {
+        this.send('getAllClients', { clients })
       })
   }
 }

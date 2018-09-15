@@ -29,6 +29,9 @@ const messageEvents = { // события, которые будут отлав�
   },
   'getLastMessage': function(data) {
     addLastMassage(data)
+  },
+  'getAllClients': function(data) {
+    console.log(data)
   }
 }
 
@@ -42,6 +45,7 @@ const wsEvents = {
   },
   onOpen: function() {
     this.send('getDialog', { token })
+    this.send('getAllClients')
   },
   onError: function() {
     alert('Not Catched error')
