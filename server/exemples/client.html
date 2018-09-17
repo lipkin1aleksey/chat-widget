@@ -54,8 +54,6 @@ const wsEvents = {
     var token = localStorage.getItem( 'token' )
     if(token)
       this.send('continueDialog', { token })
-    //else
-      // должна ждать отправки имени у виджета
   },
   onError: function() {
     alert('Not Catched error')
@@ -130,11 +128,29 @@ submit.onclick = () => {
 // add Name 
 var clientName = document.querySelector('#client-name')
 var addClient = document.querySelector('#add-client')
+
+if( localStorage.getItem('token') ) {
+  clientName.style.display = 'none'
+  addClient.style.display = 'none'
+  message.style.display = 'block'
+  submit.style.display = 'inline-block'
+} else {
+  clientName.style.display = 'block'
+  addClient.style.display = 'inline-block'
+  message.style.display = 'none'
+  submit.style.display = 'none'
+}
+
 addClient.onclick = () => {
   wsServer.send('addClient', {
     name: clientName.value,
     token: localStorage.getItem( 'token' )
   })
+
+  clientName.style.display = 'none'
+  addClient.style.display = 'none'
+  message.style.display = 'block'
+  submit.style.display = 'inline-block'
 }
 
 

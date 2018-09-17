@@ -16,9 +16,8 @@ module.exports = {
 
     db.addUser( data.name, token )
     
-    this.setToken(data.token)
+    this.setToken(token)
     this.wssEmitter.emit('addClient', token, this)
-
     this.send('setToken', { token })
   },
   'continueDialog': function(data) {

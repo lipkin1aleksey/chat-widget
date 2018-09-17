@@ -13,14 +13,21 @@ class dbClass {
     this.firestore.settings(settings);
   }
 
-  dbListener(){
-    var doc = this.firestore.collection('main').doc('users');
+  dbCollectionListener (pCollectionName, pFunc) {
+    let first = true;
+    let query = this.firestore.collection(pCollectionName)
 
-    return doc.onSnapshot(docSnapshot => {
-      console.log(docSnapshot.data());
+    let observer = query.onSnapshot(querySnapshot => {
+      if (!first) {
+        querySnapshot.docChanges.forEach(function (a) {
+          pFunc.call(this, {collectionName: pCollectionName, type: a.type, ...a.doc.data()});
+        })
+      } else {
+        first = false;
+      }
     }, err => {
       console.log(`Encountered error: ${err}`);
-    });
+    })
   }
 
   getUser (pId) {
@@ -54,7 +61,7 @@ class dbClass {
   }
 
   addUser (pName, pUserId) {
-    if (pUserId === undefined){
+    if (pUserId === undefined) {
       pUserId = Date.now();
     }
     let users = this.firestore.collection("users").doc();
@@ -62,13 +69,13 @@ class dbClass {
     return pUserId;
   }
 
-  addConversation(pUserId){
+  addConversation (pUserId) {
     let conversations = this.firestore.collection("conversations").doc();
-    conversations.set({id: Date.now(), userId: pUserId, messages: [] });
+    conversations.set({id: Date.now(), userId: pUserId, messages: []});
   }
 
-  addMessage(pUserId, message, pType){
-    let convRef = this.firestore.collection('conversations').where('userId','==',pUserId).orderBy('id','desc');
+  addMessage (pUserId, message, pType) {
+    let convRef = this.firestore.collection('conversations').where('userId', '==', pUserId).orderBy('id', 'desc');
     return convRef.get()
       .then(snapshot => {
         let convData;
@@ -77,24 +84,24 @@ class dbClass {
           convData.messages.push({text: message, sender: pType, time: Date.now()});
           doc.ref.set(convData);
         });
-        return convData.messages[convData.messages.length-1]
+        return convData.messages[convData.messages.length - 1];
       })
       .catch(err => {
         this.addConversation(pUserId);
-        this.addMessage(pUserId, message, pType);
+        return this.addMessage(pUserId, message, pType);
       });
   }
 
-  getDialog(pUserId){
+  getDialog (pUserId) {
     //this.FieldValue.serverTimestamp()
-    let convRef = this.firestore.collection('conversations').where('userId','==',pUserId).orderBy('id','desc');
+    let convRef = this.firestore.collection('conversations').where('userId', '==', pUserId).orderBy('id', 'desc');
     return convRef.get()
       .then(snapshot => {
         let convData = {};
         snapshot.forEach(doc => {
           convData = doc.data();
         });
-        return convData.messages.sort(function(a, b) {
+        return convData.messages.sort(function (a, b) {
           return a.time - b.time;
         });
       })

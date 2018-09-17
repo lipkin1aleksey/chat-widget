@@ -1,4 +1,4 @@
-const clientEvents = require('./client-events')
+const clientEvents = require('./events')
 
 class Client {
   constructor(ws, wssEmitter) {

@@ -28,12 +28,14 @@ class WSServet {
 
   addManager(ws) {
     this.managers.push( new Manager(ws, this.wssEmitter) )
+    console.log(this.managers.length)
   }
   getManagers() {
     return this.managers
   }
   removeManager(manager) {
     this.managers.splice( this.managers.indexOf(manager), 1 )
+    console.log(this.managers.length)
   }
 
   addClient(token, client) {
@@ -41,17 +43,25 @@ class WSServet {
       this.clients.set(token, [client])
     else
       this.clients.get(token).push(client)
+    
+    if( this.clients.has(token) ) //
+      console.log( this.clients.get(token).length )
+    else
+      console.log('0')  
   }
   getClients(token) {
     return this.clients.get(token)
   }
   removeClient(token, client) {
-    var clients = this.clients.get(token)
-
-    if(clients.length > 1) {
-      clients.splice( clients.indexOf(client), 1 )
+    if(this.clients.get(token) && this.clients.get(token).length > 1) {
+      this.clients.get(token).splice( this.clients.get(token).indexOf(client), 1 )
     } else 
       this.clients.delete(token)
+    
+    if( this.clients.has(token) ) //
+      console.log( this.clients.get(token).length )
+    else
+      console.log('0')    
   }
 }
 

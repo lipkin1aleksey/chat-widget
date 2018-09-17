@@ -1,4 +1,4 @@
-const managerEvents = require('./manager-events')
+const managerEvents = require('./events')
 
 class Manager {
   constructor(ws, wssEmitter) {
