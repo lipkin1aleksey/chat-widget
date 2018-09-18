@@ -17,7 +17,9 @@ app.get('/', function(req, res){
   `
   
   var tamplate = `
-    <div class='className className_${req.query.color} className_${req.query.color}'></div>
+    <div class='widght widght_${req.query.position} widght_${req.query.color}'>
+      ...
+    </div>
   `
 
   res.send( `

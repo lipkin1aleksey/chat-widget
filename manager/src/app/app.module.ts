@@ -10,6 +10,8 @@ import { FormComponent } from './widget/content/form/form.component';
 import { NavigationComponent } from './widget/content/navigation/navigation.component';
 import { AlertComponent } from './widget/content/alert/alert.component';
 
+import { WebSocketService } from './services/web-socket.service'
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,7 +26,9 @@ import { AlertComponent } from './widget/content/alert/alert.component';
   imports: [
     BrowserModule
   ],
-  providers: [],
+  providers: [
+    WebSocketService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
