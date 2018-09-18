@@ -1,35 +1,25 @@
 const express = require('express')
+
 const app = express()
 
-app.get('/', function(req, res){
-  var style = `
-    className {
+const readFile = require('./readFile')
 
-    }
-
-    className_red {
-
-    }
-
-    className_top-left {
-
-    }
-  `
+app.get('/', async function(request, response){
+  var style = await readFile.CSS()
+  var tamplate = await readFile.HTML({
+    position: request.query.position, 
+    color: request.query.color
+  })
   
-  var tamplate = `
-    <div class='widght widght_${req.query.position} widght_${req.query.color}'>
-      ...
-    </div>
-  `
-
-  res.send( `
-    var div = document.createElement('DIV')
-    div.innerHTML = \`${tamplate}\`
-    document.body.append(div)
-
+  response.send( `
     var style = document.createElement('STYLE')
     style.innerHTML = \`${style}\`
     document.head.append(style)
+
+    var tamplate = document.createElement('TAMPLATE')
+    tamplate.innerHTML = \`${tamplate}\`
+    document.body.append(tamplate)
   ` )
 })
+
 app.listen(3000, () => console.log('Server has been started on ' + 3000))

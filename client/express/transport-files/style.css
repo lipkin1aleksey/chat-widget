@@ -1,0 +1,37 @@
+.widght {
+  position: fixed;
+
+  width: 100px;
+  height: 100px;
+
+  background: black;
+}
+
+.widght_red {
+  background: red;
+}
+
+.widght_bottom-left {
+  bottom: 0;
+  left: 0;
+}
+
+.widght_bottom-right {
+  bottom: 0;
+  right: 0;
+}
+
+.widght_bottom-middle {
+  bottom: 0;
+  left: 50%;
+
+  transform: translateX(-50%);
+}
+
+.widght_top-rigth {
+  bottom: 0;
+}
+
+.widght_top-left {
+  bottom: 0;
+}
