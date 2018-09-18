@@ -30,12 +30,19 @@ module.exports = {
       })
   },
   'addMessage': function(data) {
-    db.addMessage( data.token, data.text, 1 )
-      .then( message => {
-        this.wssEmitter.emit('addMassage', {
-          message,
-          token: data.token
+    db.getUser(data.token)
+      .then(user => {
+        db.addMessage( data.token, data.text, {
+          type: 'client',
+          name: user.name
         })
+          .then( message => {
+            this.wssEmitter.emit('addMassage', {
+              message,
+              token: data.token
+            })
+          })
       })
+    
   }
 }

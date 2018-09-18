@@ -15,6 +15,7 @@ export class WebSocketService {
   clients$ = new Subject()
   dialog$ = new Subject()
   lastMessage$ = new Subject()
+
   messageEvent$ = fromEvent(this.ws, "message")
 
   constructor() {
@@ -24,7 +25,7 @@ export class WebSocketService {
   _setWsEvents() {
     this.messageEvent$
       .subscribe( 
-        event => { 
+        (event: any) => { 
           const data = JSON.parse(event.data)
 
           this.messageEvents[data.event].call(this, data.data)

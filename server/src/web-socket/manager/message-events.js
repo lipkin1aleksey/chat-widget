@@ -8,13 +8,16 @@ module.exports = {
       })
   },
   'addMessage': function(data) {
-    db.addMessage( data.token, data.text, 1 )
+    db.addMessage( data.token, data.text, {
+      type: 'manager',
+      name: 'Manager'
+    })
       .then( message => {
         this.wssEmitter.emit('addMassage', {
           message,
           token: data.token
         })
-      })      
+      })   
   },
   'getAllClients': function() {
     db.getUsers()
