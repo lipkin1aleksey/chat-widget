@@ -24,7 +24,7 @@ module.exports.HTML = function(params) {
 
 module.exports.JS = function() {
   return new Promise(res => {
-    fs.readFile( __dirname + '/transport-files/script.js', function(err, data) {
+    fs.readFile( __dirname + '/transport-files/script-min.js', function(err, data) {
       res( Buffer.from(data).toString('utf8') )
     })
   })
