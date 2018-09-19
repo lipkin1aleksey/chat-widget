@@ -10,23 +10,12 @@ import { log } from 'util';
 export class DialogComponent implements OnInit {
   messages = [];
 
-  constructor(private ws: WebSocketService) {
-    /*this.messages = [
-      {
-        'sender': 'client',
-        'text': 'Хочу купить рамку планетарий'
-      },
-      {
-        'sender': 'manager',
-        'text': 'Очень хорошо, 9 тысяч'
-      },
-    ];*/
-  }
+  constructor(private ws: WebSocketService) {}
 
   ngOnInit() {
     this.ws.dialog$
       .subscribe((data: object[]) => {
-          this.messages = data;
+          this.messages = data || [];
         }
       );
 

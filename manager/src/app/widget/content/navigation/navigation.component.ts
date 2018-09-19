@@ -11,11 +11,7 @@ import { log } from 'util';
 export class NavigationComponent implements OnInit {
   users: User[] = [];
 
-  constructor(private ws: WebSocketService) {
-    /*this.users.push({name: 'Aleksey'});
-    this.users.push({name: 'Peter'});
-    this.users.push({name: 'Василий'});*/
-  }
+  constructor(private ws: WebSocketService) { }
 
   ngOnInit() {
     this.ws.clients$

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-import { WebSocketService } from './services/web-socket.service'
 import { log } from 'util';
 
 @Component({
@@ -11,13 +10,8 @@ import { log } from 'util';
 export class AppComponent implements OnInit {
   title = 'manager';
 
-  constructor(private ws:WebSocketService) {}
+  constructor() {}
 
   ngOnInit() {
-    //setTimeout( () => this.ws.send('getAllClients', {}), 1 )
-    // setTimeout( () => this.ws.send('getAllClients', {}), 100 )
-    //setTimeout( () => this.ws.send('getDialog', { token: 'qrzihx' }), 100 )
-    //setTimeout( () => this.ws.send('addMessage', { token: 'qrzihx', text: 'something' }), 100 )
-
   }
 }
