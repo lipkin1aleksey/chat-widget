@@ -6,10 +6,9 @@ module.exports = {
     this.messageEvents[data.event].call(this, data.data)
   },
   onOpen: function(event) {
-    
   },
-  onError: function(event) {
-    
+  onError: function(e) {
+    console.error(e)
   },
   onClone: function() {
     console.log('-user')

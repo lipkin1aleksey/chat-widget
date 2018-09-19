@@ -1,27 +1,43 @@
 .dialog {
     list-style-type: none;
     padding: 0;
+    
+    max-height: 70vh; /* плохо */
+
+    overflow-y: scroll;
 }
 .message {
     position: relative;
     margin-bottom: 16px;
 }
-.message .client,
-.message .manager {
+li.manager{
+  text-align: right;
+}
+
+li.manager span.triangle{
+  right: -5px;
+  transform: rotate(180deg);
+}
+
+li.client span.triangle{
+  left: -5px;
+}
+
+.message span.client,
+.message span.manager {
     display: inline-block;
     padding: 16px;
     border-radius: 5px;
 }
-.client {
+span.client {
     background: #EAF1FF;
 }
-.manager {
+span.manager {
     background: #B4E7FF;
 }
 .triangle {
     position: absolute;
     top: 50%;
-    left: -5px;
     width: 0;
     height: 0;
     padding: 0;

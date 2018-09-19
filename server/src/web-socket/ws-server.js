@@ -24,18 +24,20 @@ class WSServet {
   setWssEvents() {
     this._wssClient.on('connection', WSClientEvents.onConnection.bind(this))
     this._wssManager.on('connection', WSManagerEvents.onConnection.bind(this))
+    this._wssClient.on('error', e => console.error(e) )
+    this._wssManager.on('error', e => console.error(e) )
   }
 
   addManager(ws) {
     this.managers.push( new Manager(ws, this.wssEmitter) )
-    console.log(this.managers.length)
+    console.log(this.managers.length) //
   }
   getManagers() {
     return this.managers
   }
   removeManager(manager) {
     this.managers.splice( this.managers.indexOf(manager), 1 )
-    console.log(this.managers.length)
+    console.log(this.managers.length) //
   }
 
   addClient(token, client) {

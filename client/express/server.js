@@ -10,15 +10,18 @@ app.get('/', async function(request, response){
     position: request.query.position, 
     color: request.query.color
   })
+  var script = await readFile.JS()
   
   response.send( `
-    var style = document.createElement('STYLE')
-    style.innerHTML = \`${style}\`
-    document.head.append(style)
+var style = document.createElement('STYLE')
+style.innerHTML = \`${style}\`
+document.head.append(style)
 
-    var tamplate = document.createElement('TAMPLATE')
-    tamplate.innerHTML = \`${tamplate}\`
-    document.body.append(tamplate)
+var tamplate = document.createElement('TAMPLATE')
+tamplate.innerHTML = \`${tamplate}\`
+document.body.append(tamplate)
+
+${script}
   ` )
 })
 

@@ -7,8 +7,8 @@
   <div class="row mt-auto">
     <div class="col">
       <ul class="dialog">
-        <li class="message" *ngFor="let message of messages">
-          <span [class]="message.sender">{{message.text}}</span>
+        <li class="message" *ngFor="let message of messages" [ngClass]="message.sender.type">
+          <span [class]="message.sender.type">{{message.text}}</span>
           <span class="triangle"></span>
         </li>
       </ul>

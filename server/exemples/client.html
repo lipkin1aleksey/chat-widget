@@ -12,6 +12,10 @@
 
       overflow: scroll;
     }
+
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -130,15 +134,10 @@ var clientName = document.querySelector('#client-name')
 var addClient = document.querySelector('#add-client')
 
 if( localStorage.getItem('token') ) {
-  clientName.style.display = 'none'
-  addClient.style.display = 'none'
-  message.style.display = 'block'
-  submit.style.display = 'inline-block'
+  clientName.classList.toggle("hidden")
+  addClient.classList.toggle("hidden")
 } else {
-  clientName.style.display = 'block'
-  addClient.style.display = 'inline-block'
-  message.style.display = 'none'
-  submit.style.display = 'none'
+  submit.disabled = true;
 }
 
 addClient.onclick = () => {
@@ -147,10 +146,8 @@ addClient.onclick = () => {
     token: localStorage.getItem( 'token' )
   })
 
-  clientName.style.display = 'none'
-  addClient.style.display = 'none'
-  message.style.display = 'block'
-  submit.style.display = 'inline-block'
+  clientName.classList.toggle("hidden")
+  addClient.classList.toggle("hidden")
 }
 
 

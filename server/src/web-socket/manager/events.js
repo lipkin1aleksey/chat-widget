@@ -8,8 +8,8 @@ module.exports = {
   onOpen: function(event) {
     
   },
-  onError: function(event) {
-    
+  onError: function(e) {
+    console.error(e)
   },
   onClone: function(event) {
     console.log('-user')
