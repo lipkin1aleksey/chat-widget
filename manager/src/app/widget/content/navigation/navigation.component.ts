@@ -22,7 +22,7 @@ export class NavigationComponent implements OnInit {
           }
         })
       });
-    
+
     this.ws.newClient$
       .subscribe( (data:any) => {
         this.users.push(new User(data.name, data.token))
@@ -35,7 +35,6 @@ export class NavigationComponent implements OnInit {
     });
     pUser.active = true;
     this.ws.activeUser = pUser;
-    
     this.ws.send('getDialog', {token: pUser.id});
   }
 }

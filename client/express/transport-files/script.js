@@ -1,3 +1,5 @@
+//// Widget ////
+
 class Widget {
   constructor(el) {
     this.el = el
@@ -36,7 +38,7 @@ class Widget {
 
     var date = document.createElement('SPAN')
     date.className = 'support_widget__mess-date'
-    date.innerText = new Date(data.time).toDateString()
+    date.innerText = new Date(data.time).toLocaleString()
     info.appendChild(date)
 
     li.innerHTML += data.text
@@ -117,7 +119,7 @@ class WSServer {
   }
 }
 
-////////
+//// Functions ////
 
 function addClient() {
   widget.el.querySelector('.support_widget__name-button').onclick = () => {

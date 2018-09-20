@@ -26,4 +26,4 @@ npm run start
 http://localhost:4200/
 
 ##### 2) Open a widget
-...\chat-widget\client\express\index.html
+...\chat-widget\client\index.html

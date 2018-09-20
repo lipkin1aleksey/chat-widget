@@ -6,9 +6,10 @@
   </div>
   <div class="row mt-auto">
     <div class="col">
-      <ul class="dialog">
+      <ul class="dialog" id="dialog">
         <li class="message" *ngFor="let message of messages" [ngClass]="message.sender.type">
-          <span [class]="message.sender.type">{{message.text}}</span>
+          <span [class]="message.sender.type">{{message.text}}<span class="time">{{message.time | date:"MMM d, H:mm"}}</span></span>
+          
           <span class="triangle"></span>
         </li>
       </ul>

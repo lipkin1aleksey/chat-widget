@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {WebSocketService} from "../../../services/web-socket.service";
-import { log } from 'util';
 
 @Component({
   selector: 'app-dialog',
@@ -10,7 +9,8 @@ import { log } from 'util';
 export class DialogComponent implements OnInit {
   messages = [];
 
-  constructor(private ws: WebSocketService) {}
+  constructor(private ws: WebSocketService) {
+  }
 
   ngOnInit() {
     this.ws.dialog$
@@ -20,10 +20,14 @@ export class DialogComponent implements OnInit {
       );
 
     this.ws.lastMessage$
-      .subscribe( (data:any) => {
-        if(this.ws.activeUser.id === data.token)
+      .subscribe((data: any) => {
+        if (this.ws.activeUser.id === data.token)
           this.messages.push(data.message)
       });
+  }
+
+  ngAfterViewChecked() {
+    document.getElementById('dialog').scrollTop = document.getElementById('dialog').scrollHeight;
   }
 
 }
